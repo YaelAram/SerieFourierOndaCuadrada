@@ -1,12 +1,5 @@
 import math
-from Punto import Punto
 import os
-
-
-def graficar(matriz, puntos):
-    for punto in puntos:
-        x, y = punto.ajustar()
-        matriz[y][x] = "*"
 
 
 def mat():
@@ -24,27 +17,23 @@ def mat():
     return matriz
 
 
-def evaluar(iteraciones, x):
+def evaluar_ajustar(iteraciones, x):
     resultado = 0.25
     for i in range(1, iteraciones + 1):
         a, b = ((i * math.pi) / 2), (i * x)
         resultado += (1 / (math.pi * i)) * ((math.sin(a) * math.cos(b)) + (math.sin(b) * (1 - math.cos(a))))
-    return resultado
+    return int(abs((resultado * 100) + 10))
 
 
-def calcular(iteraciones):
-    puntos = []
+def graficar(iteraciones, matriz):
     for i in range(315):
-        x = (i / 100)
-        puntos.append(Punto(x, evaluar(iteraciones, x)))
-    return puntos
+        matriz[evaluar_ajustar(iteraciones, i / 100)][i] = "*"
 
 
 def main():
     print("Serie de Fourier de una Onda Cuadrada\n")
-    puntos = calcular(int(input("Ingresa el numero de iteraciones: ")))
     matriz = mat()
-    graficar(matriz, puntos)
+    graficar(int(input("Ingresa el numero de iteraciones: ")), matriz)
     matriz.reverse()
     os.system("clear")
     for fila in matriz:
